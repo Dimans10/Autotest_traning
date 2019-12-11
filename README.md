@@ -1,1 +1,1 @@
-# Autotest_traning
+# Repository for Autotest in python 
