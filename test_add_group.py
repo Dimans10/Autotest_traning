@@ -15,7 +15,7 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_group_page(wd)
-        self.greate_new_group(wd, Group(name="Her name", header="Her header", footer="Her footer"))
+        self.create_new_group(wd, Group(name="Her name", header="Her header", footer="Her footer"))
         self.back_to_group_page(wd)
         self.logout(wd)
 
@@ -24,11 +24,25 @@ class TestAddGroup(unittest.TestCase):
         self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.open_group_page(wd)
-        self.greate_new_group(wd, Group(name="", header="", footer=""))
+        self.create_new_group(wd, Group(name="", header="", footer=""))
         self.back_to_group_page(wd)
         self.logout(wd)
 
-    def greate_new_group(self, wd, group):
+    def open_home_page(self, wd):
+        wd.get("http://localhost/addressbook/")
+
+    def login(self, wd, username, password):
+        wd.find_element_by_name("user").click()
+        wd.find_element_by_name("user").clear()
+        wd.find_element_by_name("user").send_keys(username)
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys(password)
+        wd.find_element_by_xpath("//input[@value='Login']").click()
+
+    def open_group_page(self, wd):
+        wd.find_element_by_link_text("groups").click()
+
+    def create_new_group(self, wd, group):
         # create new group
         wd.find_element_by_name("new").click()
         # fill group from
@@ -42,25 +56,11 @@ class TestAddGroup(unittest.TestCase):
         # complete create
         wd.find_element_by_name("submit").click()
 
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
-
     def back_to_group_page(self, wd):
         wd.find_element_by_link_text("group page").click()
 
-    def open_group_page(self, wd):
-        wd.find_element_by_link_text("groups").click()
-
-    def login(self, wd, username, password):
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//input[@value='Login']").click()
-
-    def open_home_page(self, wd):
-        wd.get("http://localhost/addressbook/")
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
 
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
