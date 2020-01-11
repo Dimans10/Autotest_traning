@@ -13,7 +13,6 @@ class TestAddContact(unittest.TestCase):
     
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd)
         self.open_add_form(wd)
         self.fill_addition_form(wd, Contact(first_name = u"Иван", middle_name = u"Иванович", last_name = u"Иванов",
@@ -21,13 +20,13 @@ class TestAddContact(unittest.TestCase):
                                 address = "Pyshkina st home Kolotyshkina 5", home = "123456789", mobile = "+987654321",
                                 work = "14946", fax = "228", email1 = "123@mail.ru", email2 = "321@mail.ru",
                                 email3 = "333@mail.ru", home_page = "ok.ru",  bday = "16", bmonth = "July", byear = "1995"))
-        self.back_to_home(wd)
         self.logout(wd)
 
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd):
+        self.open_home_page(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").send_keys("admin")
@@ -103,17 +102,8 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_link_text("home page").click()
 
     def logout(self, wd):
+        self.back_to_home(wd)
         wd.find_element_by_link_text("Logout").click()
-
-    def is_element_present(self, how, what):
-        try: self.wd.find_element(by=how, value=what)
-        except NoSuchElementException as e: return False
-        return True
-    
-    def is_alert_present(self):
-        try: self.wd.switch_to_alert()
-        except NoAlertPresentException as e: return False
-        return True
     
     def tearDown(self):
         self.wd.quit()
