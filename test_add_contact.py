@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from selenium import webdriver
-from selenium.webdriver.support.ui import Select
 import pytest
 import unittest
 from contact import Contact
-from application import Application
+from fixture.application import Application
 
 @pytest.fixture
 def app(request):
@@ -13,13 +11,13 @@ def app(request):
     return fixture
 
 def test_add_contact(app):
-        app.login(username="admin", password="secret")
+        app.session.login(username="admin", password="secret")
         app.create_new_contact(Contact(first_name =u"Иван", middle_name =u"Иванович", last_name =u"Иванов",
                                             nickname = "Ivan!", company = "Booking Mashin", title = "Ivyshka",
                                             address = "Pyshkina st home Kolotyshkina 5", home = "123456789", mobile = "+987654321",
                                             work = "14946", fax = "228", email1 = "123@mail.ru", email2 = "321@mail.ru",
                                             email3 = "333@mail.ru", home_page = "ok.ru", bday = "16", bmonth = "July", byear = "1995"))
-        app.logout()
+        app.session.logout()
 
 if __name__ == "__main__":
     unittest.main()
