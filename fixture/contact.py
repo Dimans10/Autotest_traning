@@ -8,9 +8,13 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("add new").click()
 
-    def back_to_home(self):
+    def back_to_home_page(self):
         wd = self.app.wd
         wd.find_element_by_link_text("home page").click()
+
+    def back_to_home(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
 
     def create(self, contact):
         wd = self.app.wd
@@ -73,3 +77,13 @@ class ContactHelper:
         wd.find_element_by_name("byear").send_keys(contact.byear)
         # conplete create
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+
+    def delete_first_contact(self):
+        wd = self.app.wd
+        # select first contact
+        wd.find_element_by_name("selected[]").click()
+        # click "Delete"
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        # click "OK"
+        #wd.find_element_by_link_text("ОК").click()
+        wd.switch_to_alert().accept()
