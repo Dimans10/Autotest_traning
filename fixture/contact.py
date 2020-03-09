@@ -1,4 +1,5 @@
 from selenium.webdriver.support.ui import Select
+import time
 
 class ContactHelper:
     def __init__(self, app):
@@ -16,10 +17,8 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("home").click()
 
-    def create(self, contact):
+    def fill_from(self, contact):
         wd = self.app.wd
-        self.open_add_form()
-        # filling fields
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contact.first_name)
@@ -75,7 +74,13 @@ class ContactHelper:
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
         wd.find_element_by_name("byear").send_keys(contact.byear)
-        # conplete create
+
+    def create(self, contact):
+        wd = self.app.wd
+        self.open_add_form()
+        # filling fields
+        self.fill_from(contact)
+        # complete create
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
 
     def delete_first_contact(self):
@@ -87,3 +92,16 @@ class ContactHelper:
         # click "OK"
         #wd.find_element_by_link_text("ОК").click()
         wd.switch_to_alert().accept()
+
+    def edit_first(self, contact):
+        wd = self.app.wd
+        wd.find_element_by_name("selected[]").click()
+        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        # find_element_by_xpath("//img[@alt='Edit']").click()
+        self.fill_from(contact)
+        # save changes
+        wd.find_element_by_xpath("(//input[@value='Update'])[2]").click()
+        wd.find_element_by_link_text("home page").click()
+
+
+
