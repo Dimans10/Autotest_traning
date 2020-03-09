@@ -95,13 +95,9 @@ class ContactHelper:
 
     def edit_first(self, contact):
         wd = self.app.wd
-        wd.find_element_by_name("selected[]").click()
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
-        # find_element_by_xpath("//img[@alt='Edit']").click()
         self.fill_from(contact)
         # save changes
         wd.find_element_by_xpath("(//input[@value='Update'])[2]").click()
-        wd.find_element_by_link_text("home page").click()
-
 
 
