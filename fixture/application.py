@@ -11,6 +11,13 @@ class Application:
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
 
+    def isvalid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            return False
+
     def open_home_page(self, wd):
         wd = self.wd
         wd.get("http://localhost/addressbook/")

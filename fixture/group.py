@@ -11,6 +11,10 @@ class GroupHelper:
         wd = self.app.wd
         wd.find_element_by_link_text("group page").click()
 
+    def back_to_home(self):
+        wd = self.app.wd
+        wd.find_element_by_link_text("home").click()
+
     def fill_form(self, group):
         wd = self.app.wd
         self.change_field_value("group_name", group.name)
