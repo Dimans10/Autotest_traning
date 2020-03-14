@@ -7,4 +7,3 @@ def test_add_contact(app):
                                    address = "Pyshkina st home Kolotyshkina 5", home = "123456789", mobile = "+987654321",
                                    work = "14946", fax = "228", email1 = "123@mail.ru", email2 = "321@mail.ru",
                                    email3 = "333@mail.ru", home_page = "ok.ru", bday = "16", bmonth = "July", byear = "1995"))
-        app.contact.back_to_home_page()

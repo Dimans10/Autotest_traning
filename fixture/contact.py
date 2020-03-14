@@ -15,7 +15,9 @@ class ContactHelper:
 
     def back_to_home(self):
         wd = self.app.wd
-        wd.find_element_by_link_text("home").click()
+        if not ((wd.current_url.endswith("addressbook/") or wd.current_url.endswith("/index.php"))
+                and len(wd.find_elements_by_xpath("//input[@onclick='MassSelection()']")) > 0):
+            wd.find_element_by_link_text("home").click()
 
     def fill_from(self, contact):
         wd = self.app.wd
@@ -82,6 +84,7 @@ class ContactHelper:
         self.fill_from(contact)
         # complete create
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
+        self.back_to_home()
 
     def delete_first_contact(self):
         wd = self.app.wd
