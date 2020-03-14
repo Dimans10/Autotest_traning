@@ -100,4 +100,8 @@ class ContactHelper:
         # save changes
         wd.find_element_by_xpath("(//input[@value='Update'])[2]").click()
 
+    def count(self):
+        wd = self.app.wd
+        return len(wd.find_elements_by_name("selected[]"))
+
 
