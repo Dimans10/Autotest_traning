@@ -105,6 +105,7 @@ class ContactHelper:
 
     def count(self):
         wd = self.app.wd
+        self.back_to_home()
         return len(wd.find_elements_by_name("selected[]"))
 
 
