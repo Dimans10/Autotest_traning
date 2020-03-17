@@ -40,6 +40,7 @@ class GroupHelper:
         # complete create
         wd.find_element_by_name("submit").click()
         self.back_to_group_page()
+        self.cash_group = None
 
     def delete_first(self):
         wd = self.app.wd
@@ -49,6 +50,7 @@ class GroupHelper:
         # click "delete groups"
         wd.find_element_by_name("delete").click()
         self.back_to_group_page()
+        self.cash_group = None
 
     def edit_first(self, group):
         wd = self.app.wd
@@ -57,18 +59,23 @@ class GroupHelper:
         wd.find_element_by_xpath("//input[@value='Edit group']").click()
         self.fill_form(group)
         wd.find_element_by_xpath("//input[@value='Update']").click()
+        self.back_to_group_page()
+        self.cash_group = None
 
     def count(self):
         wd = self.app.wd
         self.open_group_page()
         return len(wd.find_elements_by_name("selected[]"))
 
+    cash_group = None
+
     def get_group_list(self):
         wd = self.app.wd
-        self.open_group_page()
-        res = []
-        for element in wd.find_elements_by_css_selector("span.group"):
-            text = element.text
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            res.append(Group(name = text, id = id))
-        return res
+        if self.cash_group is None:
+            self.open_group_page()
+            self.cash_group = []
+            for element in wd.find_elements_by_css_selector("span.group"):
+                text = element.text
+                id = element.find_element_by_name("selected[]").get_attribute("value")
+                self.cash_group.append(Group(name = text, id = id))
+        return list(self.cash_group)
