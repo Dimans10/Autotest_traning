@@ -15,8 +15,8 @@ class ContactHelper:
 
     def back_to_home(self):
         wd = self.app.wd
-        #if len(wd.find_elements_by_name("Delete")) == 0:
-        wd.find_element_by_link_text("home").click()
+        if not (wd.current_url.endswith("addressbook/") or wd.current_url.endswith("/index.php")):
+            wd.find_element_by_link_text("home").click()
 
     def fill_form(self, group):
         wd = self.app.wd
