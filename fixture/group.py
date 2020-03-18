@@ -43,19 +43,25 @@ class GroupHelper:
         self.cash_group = None
 
     def delete_first(self):
+        self.delete_some(0)
+
+    def delete_some(self, index):
         wd = self.app.wd
         self.open_group_page()
         # select first group
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
         # click "delete groups"
         wd.find_element_by_name("delete").click()
         self.back_to_group_page()
         self.cash_group = None
 
-    def edit_first(self, group):
+    def edit_first(self, index, group):
+        self.edit_some(index, group)
+
+    def edit_some(self, index, group):
         wd = self.app.wd
         self.open_group_page()
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
         wd.find_element_by_xpath("//input[@value='Edit group']").click()
         self.fill_form(group)
         wd.find_element_by_xpath("//input[@value='Update']").click()
