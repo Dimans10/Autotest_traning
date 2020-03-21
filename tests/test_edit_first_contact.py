@@ -1,5 +1,5 @@
 from model.contact import Contact
-import time
+from random import randrange
 
 def test_edit_first_contact(app):
     if app.contact.count() == 0:
@@ -10,9 +10,10 @@ def test_edit_first_contact(app):
                                   email3 = "333@mail.ru", home_page = "ok.ru", bday = "16", bmonth = "July", byear = "1995"))
     test_contact = Contact(first_name=u"Петр", last_name=u"Петров")
     old_contacts = app.contact.get_list_contact()
-    id = old_contacts[0].id
+    index = randrange(len(old_contacts))
+    id = old_contacts[index].id
     test_contact.id = id
-    old_contacts[0] = test_contact
-    app.contact.edit_first(test_contact)
+    old_contacts[index] = test_contact
+    app.contact.edit_first(test_contact, id)
     new_contacts = app.contact.get_list_contact()
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)

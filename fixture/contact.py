@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
+import time
 
 class ContactHelper:
     def __init__(self, app):
@@ -17,12 +18,6 @@ class ContactHelper:
         wd = self.app.wd
         if not (wd.current_url.endswith("addressbook/") or wd.current_url.endswith("/index.php")):
             wd.find_element_by_link_text("home").click()
-
-    def fill_form(self, group):
-        wd = self.app.wd
-        self.change_field_value("group_name", group.name)
-        self.change_field_value("group_header", group.header)
-        self.change_field_value("group_footer", group.footer)
 
     def change_field_value(self, field_name, text):
         wd = self.app.wd
@@ -74,20 +69,24 @@ class ContactHelper:
         self.cash_contact = None
 
     def delete_first_contact(self):
+        self.delete_some_contact(0)
+
+    def delete_some_contact(self, index):
         wd = self.app.wd
         # select first contact
-        wd.find_element_by_name("selected[]").click()
+        wd.find_elements_by_name("selected[]")[index].click()
         # click "Delete"
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # click "OK"
-        #wd.find_element_by_link_text("ОК").click()
         wd.switch_to_alert().accept()
+        # пришлось добавить т.к. иначе не успевает измениться current_url
+        time.sleep(1)
         self.back_to_home()
         self.cash_contact = None
 
-    def edit_first(self, contact):
+    def edit_first(self, contact, index):
         wd = self.app.wd
-        wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % index).click()
         self.fill_from(contact)
         # save changes
         wd.find_element_by_xpath("(//input[@value='Update'])[2]").click()
