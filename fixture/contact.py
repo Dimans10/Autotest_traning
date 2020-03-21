@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
 import time
+import re
 
 class ContactHelper:
     def __init__(self, app):
@@ -56,6 +57,7 @@ class ContactHelper:
         self.change_field_value("email2", contact.email2)
         self.change_field_value("email3", contact.email3)
         self.change_field_value("homepage", contact.home_page)
+        self.change_field_value("phone2", contact.phone2)
 
     def create(self, contact):
         wd = self.app.wd
@@ -84,7 +86,7 @@ class ContactHelper:
         self.back_to_home()
         self.cash_contact = None
 
-    def edit_first(self, contact, index):
+    def edit_by_id(self, contact, index):
         wd = self.app.wd
         wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % index).click()
         self.fill_from(contact)
@@ -106,9 +108,36 @@ class ContactHelper:
             self.back_to_home()
             self.cash_contact = []
             for element in wd.find_elements_by_name("entry"):
-                x = element.find_elements_by_tag_name("td")
-                id = x[0].find_element_by_name("selected[]").get_attribute("value")
-                lastname = x[1].text
-                firstname = x[2].text
-                self.cash_contact.append(Contact(last_name=lastname, first_name=firstname, id=id))
+                row = element.find_elements_by_tag_name("td")
+                id = row[0].find_element_by_name("selected[]").get_attribute("value")
+                lastname = row[1].text
+                firstname = row[2].text
+                allphones = row[5].text.splitlines()
+                self.cash_contact.append(Contact(last_name=lastname, first_name=firstname, home=allphones[0], mobile=allphones[1],
+                                                 work=allphones[2], phone2=allphones[3], id=id))
         return list(self.cash_contact)
+
+    def get_phones_from_edit_page(self, index):
+        wd = self.app.wd
+        self.open_contact_edit_by_index(index)
+        home_phone = wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
+        mobile_phone = wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
+        work_phone = wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
+        second_phone = wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
+        return Contact(home=home_phone, mobile=mobile_phone, work=work_phone, phone2=second_phone)
+
+
+    def open_contact_edit_by_index(self, index):
+        wd = self.app.wd
+        self.back_to_home()
+        contacts = wd.find_elements_by_name("entry")
+        id = contacts[index].find_element_by_name("selected[]").get_attribute("value")
+        wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % id).click()
+
+    def open_contact_details_by_index(self, index):
+        wd = self.app.wd
+        self.back_to_home()
+        contacts = wd.find_elements_by_name("entry")
+        id = contacts[index].find_element_by_name("selected[]").get_attribute("value")
+        wd.find_element_by_xpath("//a[@href='view.php?id=%s']" % id).click()
+
