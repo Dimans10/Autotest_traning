@@ -112,18 +112,27 @@ class ContactHelper:
                 id = row[0].find_element_by_name("selected[]").get_attribute("value")
                 lastname = row[1].text
                 firstname = row[2].text
-                allphones = row[5].text
-                self.cash_contact.append(Contact(last_name=lastname, first_name=firstname, all_phones_in_contact=allphones, id=id))
+                address = row[3].text
+                all_emails = row[4].text
+                all_phones = row[5].text
+                self.cash_contact.append(Contact(last_name=lastname, first_name=firstname, address=address, all_emails_in_contact = all_emails, all_phones_in_contact=all_phones, id=id))
         return list(self.cash_contact)
 
-    def get_phones_from_edit_page(self, index):
+    def get_info_from_edit_page(self, index):
         wd = self.app.wd
         self.open_contact_edit_by_index(index)
+        firstname = wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
+        lastname = wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
+        address = wd.find_element_by_xpath("//textarea[@name='address']").text
+        email1 = wd.find_element_by_xpath("//input[@name='email']").get_attribute("value")
+        email2 = wd.find_element_by_xpath("//input[@name='email2']").get_attribute("value")
+        email3 = wd.find_element_by_xpath("//input[@name='email3']").get_attribute("value")
         home_phone = wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
         mobile_phone = wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
         work_phone = wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
         second_phone = wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
-        return Contact(home=home_phone, mobile=mobile_phone, work=work_phone, phone2=second_phone)
+        return Contact(first_name=firstname, last_name=lastname, address=address, email1=email1, email2=email2,
+                       email3=email3, home=home_phone, mobile=mobile_phone, work=work_phone, phone2=second_phone)
 
     def get_phones_from_details_page(self, index):
         wd = self.app.wd
