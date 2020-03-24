@@ -30,15 +30,15 @@ class ContactHelper:
     def filling_birthday(self, contact):
         wd = self.app.wd
         wd.find_element_by_name("bday").click()
-        Select(wd.find_element_by_name("bday")).select_by_visible_text(contact.bday)
+        Select(wd.find_element_by_name("bday")).select_by_visible_text("10")
         wd.find_element_by_xpath(
             "(.//*[normalize-space(text()) and normalize-space(.)='Birthday:'])[1]/following::option[18]").click()
         wd.find_element_by_name("bmonth").click()
-        Select(wd.find_element_by_name("bmonth")).select_by_visible_text(contact.bmonth)
+        Select(wd.find_element_by_name("bmonth")).select_by_visible_text("July")
         wd.find_element_by_xpath("//option[@value='July']").click()
         wd.find_element_by_name("byear").click()
         wd.find_element_by_name("byear").clear()
-        wd.find_element_by_name("byear").send_keys(contact.byear)
+        wd.find_element_by_name("byear").send_keys("1995")
 
     def fill_from(self, contact):
         wd = self.app.wd
