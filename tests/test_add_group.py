@@ -5,7 +5,7 @@ import pytest
 import string
 
 def ren_random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits + ' '*10
+    symbols = string.ascii_letters + string.digits #+ ' '*10
     return prefix + ''.join(random.choice(symbols) for x in range(random.randrange(maxlen)))
 
 testdata = [Group(name="", header="", footer="")] + [

@@ -4,12 +4,20 @@ from fixture.group import GroupHelper
 from fixture.contact import ContactHelper
 
 class Application:
-    def __init__(self):
-        self.wd = webdriver.Firefox()
+    def __init__(self, browser, home_url):
+        if browser == "firefox":
+            self.wd = webdriver.Firefox()
+        elif browser == "chrome":
+            self.wd = webdriver.Chrome()
+        elif browser == "ie":
+            self.wd = webdriver.Ie()
+        else:
+            raise ValueError("Uncorrected browser %s" % browser)
         self.wd.implicitly_wait(1)
         self.session = SessionHelper(self)
         self.group = GroupHelper(self)
         self.contact = ContactHelper(self)
+        self.url = home_url
 
     def isvalid(self):
         try:
@@ -18,9 +26,9 @@ class Application:
         except:
             return False
 
-    def open_home_page(self, wd):
+    def open_home_page(self):
         wd = self.wd
-        wd.get("http://localhost/addressbook/")
+        wd.get(self.url)
 
     def destroy(self):
         self.wd.quit()
