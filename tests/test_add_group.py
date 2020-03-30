@@ -1,21 +1,8 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
-import random
 import pytest
-import string
+from data.groups import testdata
 
-def ren_random_string(prefix, maxlen):
-    symbols = string.ascii_letters + string.digits #+ ' '*10
-    return prefix + ''.join(random.choice(symbols) for x in range(random.randrange(maxlen)))
-
-testdata = [Group(name="", header="", footer="")] + [
-    Group(name=ren_random_string("name", 10), header=ren_random_string("header", 10), footer=ren_random_string("footer", 5))
-    for i in range(5)
-    # пример создания данных с перебором списка возможных значений каждого из полей
-    # for name in ['', ren_random_string("name", 10)]
-    # for header in ['', ren_random_string("header", 10)]
-    # for footer in ['', ren_random_string("footer", 5)]
-]
 
 @pytest.mark.parametrize("test_group", testdata, ids=[repr(x) for x in testdata])
 def test_add_group(app, test_group):
