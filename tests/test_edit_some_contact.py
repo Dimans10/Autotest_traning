@@ -18,7 +18,3 @@ def test_edit_some_contact(app):
     app.contact.edit_by_id(test_contact, id)
     new_contacts = app.contact.get_list_contact()
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
-
-def test_test(app):
-    app.contact.open_contact_details_by_index(2)
-    time.sleep(3)
