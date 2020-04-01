@@ -43,13 +43,23 @@ class GroupHelper:
         self.cash_group = None
 
     def delete_first(self):
-        self.delete_some(0)
+        self.delete_some_by_index(0)
 
-    def delete_some(self, index):
+    def delete_some_by_index(self, index):
         wd = self.app.wd
         self.open_group_page()
         # select first group
         wd.find_elements_by_name("selected[]")[index].click()
+        # click "delete groups"
+        wd.find_element_by_name("delete").click()
+        self.back_to_group_page()
+        self.cash_group = None
+
+    def delete_some_by_id(self, id):
+        wd = self.app.wd
+        self.open_group_page()
+        # select first group
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
         # click "delete groups"
         wd.find_element_by_name("delete").click()
         self.back_to_group_page()

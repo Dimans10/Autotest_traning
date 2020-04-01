@@ -9,7 +9,7 @@ class Dbfixture:
         self.db = db
         self.user = user
         self.password = password
-        self.connection = pymysql.connect(host=host, database=db, user=user, password=password)
+        self.connection = pymysql.connect(host=host, database=db, user=user, password=password, autocommit=True )
 
     def get_list_group_from_db(self):
         groups = []
